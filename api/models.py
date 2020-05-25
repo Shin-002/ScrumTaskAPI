@@ -21,7 +21,7 @@ class Task(models.Model):
         ('3', 'Done'),
     )
 
-    # class Sprintを参照している
+ 
     targetsprint = models.ForeignKey(Sprint, on_delete=models.CASCADE)
     task = models.CharField(max_length=40)
     description = models.CharField(max_length=300)
