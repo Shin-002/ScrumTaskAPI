@@ -20,7 +20,7 @@ class TagViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
 class TaskViewSet(viewsets.ModelViewSet):
-    queryset = Task.objects.all()
+    queryset = Task.objects.all().order_by('-id')
     serializer_class = TaskSerializer
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
