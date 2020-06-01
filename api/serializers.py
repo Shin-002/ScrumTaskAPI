@@ -6,9 +6,9 @@ from rest_framework.authtoken.models import Token
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'password')
+        fields = ('id','username','password')
         extra_kwargs = {'password':{'write_only': True, 'required': True}}
-        
+
     def create(self, validated_data):
         user = User.objects.create_user(**validated_data)
         Token.objects.create(user=user)
@@ -30,17 +30,18 @@ class TaskSerializer(serializers.ModelSerializer):
     responsible = UserSerializer(read_only=True)
 
     sprint_pk_id = serializers.PrimaryKeyRelatedField(queryset=Sprint.objects.all(), write_only=True)
-    tag_pk_id = serializers.PrimaryKeyRelatedField(queryset=Tag.objects.all(), write_only=True)
-    responsible_pk_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), write_only=True)
+    tag_pk_id = serializers.PrimaryKeyRelatedField(queryset=Tag.objects.all(), write_only = True)
+    responsible_pk_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), write_only = True)
+
 
     class Meta:
         model = Task
-        fields = ('id', 'targetsprint', 'task', 'description', 'criteria', 'responsible', 'estimate', 'targettag', 
-                  'status', 'sprint_pk_id', 'tag_pk_id', 'responsible_pk_id', 'created_at', 'updated_at')
-        read_only_fields = ('created_at', 'updated_at')
+
+        fields = ('id','targetsprint','task','description','criteria','responsible','estimate', 'targettag','status','sprint_pk_id','tag_pk_id','responsible_pk_id','created_at','updated_at')
+        read_only_fields = ('created_at','updated_at')
 
     def create(self, validated_data):
-        validated_data['targetsprint'] = validated_data.get('sprint_pk_id', None)
+        validated_data['targetsprint'] = validated_data.get('sprint_pk_id',None)
         validated_data['targettag'] = validated_data.get('tag_pk_id', None)
         validated_data['responsible'] = validated_data.get('responsible_pk_id', None)
 
@@ -51,7 +52,7 @@ class TaskSerializer(serializers.ModelSerializer):
         return Task.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
-        validated_data['targetsprint'] = validated_data.get('sprint_pk_id', None)
+        validated_data['targetsprint'] = validated_data.get('sprint_pk_id',None)
         validated_data['targettag'] = validated_data.get('tag_pk_id', None)
         validated_data['responsible'] = validated_data.get('responsible_pk_id', None)
 
